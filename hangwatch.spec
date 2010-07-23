@@ -1,6 +1,6 @@
 Name: hangwatch
 Version: 0.3
-Release: 9%{?dist}
+Release: 10%{?dist}
 #Url: http://people.redhat.com/~csnook/hangwatch/
 #url: http://people.redhat.com/astokes/hangwatch/
 url: http://github.com/jumanjiman/hangwatch
@@ -75,6 +75,9 @@ if [ $1 -eq 0 ]; then
 fi
 
 %changelog
+* Fri Jul 23 2010 Paul Morgan <jumanjiman@gmail.com> 0.3-10
+- adapted Makefile for tito src tree (jumanjiman@gmail.com)
+
 * Fri Jul 23 2010 Paul Morgan <jumanjiman@gmail.com> 0.3-9
 - really changed source spec for tito (jumanjiman@gmail.com)
 
