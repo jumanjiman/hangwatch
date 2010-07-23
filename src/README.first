@@ -1,0 +1,13 @@
+Hangwatch was originally developed by Chris Snook while
+he was at Red Hat, Inc. It was picked up by Adam Stokes
+somewhat recently.
+
+This package includes several doc files:
+
+FAQ.orig: the original FAQ from Chris with additions
+	from Paul Morgan several years ago.
+
+FAQ.astokes: the current mini-FAQ from Adam Stokes as published at 
+	http://people.redhat.com/astokes/hangwatch/
+
+README.asciidoc: the original FAQ converted into asciidoc

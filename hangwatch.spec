@@ -21,6 +21,12 @@ threshold is exceeded. Hangwatch will fire when the system is too
 bogged down to get work done, but probably won't help for a hard
 lockup.
 
+Many hangs are actually the result of very rapid load spikes
+which never show up in logs, because the applications that would
+be logging the load spike cannot run. Calling it "hangwatch"
+convinces people to run it even if they haven't seen load spikes
+with their hangs.
+
 Thanks to Chris Snook for making this tool available.
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -33,19 +39,21 @@ General Public License for more details.
 %clean
 [ "%{buildroot}" = "/" ] && exit 1
 rm -fr %{buildroot}
+make clean
 
 %build
 [ "%{buildroot}" = "/" ] && exit 1
 rm -fr %{buildroot}
 make all
 
+
 %install
 mkdir -p %{buildroot}/sbin
 mkdir -p %{buildroot}/etc/sysconfig
 mkdir -p %{buildroot}/etc/rc.d/init.d
 install -m755 hangwatch %{buildroot}/sbin
-install -m755 etc/rc.d/init.d/hangwatch %{buildroot}/etc/rc.d/init.d
-install -m644 etc/sysconfig/hangwatch %{buildroot}/etc/sysconfig
+install -m755 src/etc/rc.d/init.d/hangwatch %{buildroot}/etc/rc.d/init.d
+install -m644 src/etc/sysconfig/hangwatch %{buildroot}/etc/sysconfig
 mkdir -p %{buildroot}/var/run/hangwatch
 
 %files
@@ -56,6 +64,9 @@ mkdir -p %{buildroot}/var/run/hangwatch
 %config(noreplace) /etc/sysconfig/hangwatch
 %doc README.asciidoc
 %doc src/LICENSE
+%doc src/README.first
+%doc src/FAQ.csnook
+%doc src/FAQ.astokes
 
 %preun
 if [ $1 -eq 0 ]; then
@@ -64,7 +75,12 @@ if [ $1 -eq 0 ]; then
 fi
 
 %changelog
-* Fri Sep 21 2007 Paul Morgan <pmorgan@redhat.com>
+* Fri Jul 23 2010 Paul Morgan <pmorgan@redhat.com> 0.3-7
+- updated source from http://people.redhat.com/astokes/hangwatch/
+  which daemonizes hangwatch
+- adapted spec for tito builds
+
+* Fri Sep 21 2007 Paul Morgan <pmorgan@redhat.com> 0.03-1
 - added init script plus config file
 
 * Thu Sep 20 2007 Paul Morgan <pmorgan@redhat.com>

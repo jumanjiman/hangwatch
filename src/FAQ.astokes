@@ -1,0 +1,36 @@
+Mini FAQ
+
+Which one do I download?
+
+If you just want to run it then download the rpm that does not have
+'src' in the filename. Otherwise if you plan on working with the
+actual source or want to rebuild the package then download the one
+with 'src' in its filename. If you aren't sure what is going on and
+you have a support contract with Red Hat please call and ask : )
+
+How do I install it?
+
+# rpm -Uvh hangwatch*rpm
+
+How do I run it?
+
+# service hangwatch start
+
+or
+
+# reboot
+
+Where do I set the options like threshold, interval, and sysrq
+keys? You may set this in /etc/sysconfig/hangwatch , there are
+default options in place for your reference.
+
+How do I disable it once I'm done?
+
+# service hangwatch stop
+# chkconfig hangwatch off
+
+or
+
+# rpm -e hangwatch
+
+This requires that you re-install if needed again.
