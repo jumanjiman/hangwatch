@@ -39,12 +39,12 @@ General Public License for more details.
 %clean
 [ "%{buildroot}" = "/" ] && exit 1
 rm -fr %{buildroot}
-make clean
+make -C src/ clean
 
 %build
 [ "%{buildroot}" = "/" ] && exit 1
 rm -fr %{buildroot}
-make all
+make -C src/ all
 
 
 %install
