@@ -51,7 +51,7 @@ make -C src/ all
 mkdir -p %{buildroot}/sbin
 mkdir -p %{buildroot}/etc/sysconfig
 mkdir -p %{buildroot}/etc/rc.d/init.d
-install -m755 hangwatch %{buildroot}/sbin
+install -m755 src/hangwatch %{buildroot}/sbin
 install -m755 src/etc/rc.d/init.d/hangwatch %{buildroot}/etc/rc.d/init.d
 install -m644 src/etc/sysconfig/hangwatch %{buildroot}/etc/sysconfig
 mkdir -p %{buildroot}/var/run/hangwatch
