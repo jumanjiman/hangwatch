@@ -1,0 +1,6 @@
+*~
+*.pyc
+*.pyo
+debugfiles.list
+debuglinks.list
+debugsources.list

@@ -1,0 +1,131 @@
+#!/bin/sh
+# Startup script for hangwatch
+#
+# chkconfig: 2345 25 60
+# description: Triggers a system action 
+#              if a user-defined loadavg is exceeded
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+[ -x /sbin/hangwatch ] || exit 1
+
+base_prog="hangwatch"
+base_pidfile=${PIDFILE-/var/run/hangwatch/${base_prog}.pid}
+base_lockfile=${LOCKFILE-/var/lock/subsys/${base_prog}}
+RETVAL=0
+
+
+# Get config
+[ -f /etc/sysconfig/${base_prog} ] && . /etc/sysconfig/${base_prog}
+
+# must have positive interval
+[ $INTERVAL -gt 0 ] || exit 1
+
+# at least one threshold must be positive
+[ $LOAD_THRESH_1 -gt 0 -o $LOAD_THRESH_2 -gt 0 -o $LOAD_THRESH_3 -gt 0 ] || exit 1
+
+start_instance() {
+	prog=${base_prog}$1
+	pidfile=${base_pidfile}$1
+	lockfile=${base_lockfile}$1
+
+	if ! [ $1 -ge 1 -a $1 -le 3 ]; then
+		echo "Error: invalid instance" >&2
+		return 1
+	fi
+	opts="-i $INTERVAL -s $SYSRQ_1 -t $LOAD_THRESH_1"
+	cmd="$prog $opts &> /dev/null &"
+	echo -n $"Starting $prog: "
+	daemon --pidfile=${pidfile} $cmd 
+	pidof $prog > ${pidfile}
+	RETVAL=$?
+	if [ -f ${pidfile} ]; then
+		if [ "x$CPUS" != "x" ]; then
+		    affinity="$(taskset -p $CPUS $(cat ${pidfile}))"
+		    /usr/bin/logger -t ${prog} $affinity
+		    RETVAL=$?
+		fi
+		if [ "x$RTPRIO" != "x" ]; then
+		    chrt -p -r $RTPRIO $(cat ${pidfile})
+		    RETVAL=$?
+		fi
+	fi
+	echo
+	[ $RETVAL -eq 0 ] && touch ${lockfile}
+
+	return $RETVAL
+}
+
+stop_instance() {
+	prog=${base_prog}$1
+	pidfile=${base_pidfile}$1
+	lockfile=${base_lockfile}$1
+
+	if ! [ $1 -ge 1 -a $1 -le 3 ]; then
+		echo "Error: invalid instance" >&2
+		return 1
+	fi
+
+	echo -n $"Stopping $prog: "
+	killproc -p ${pidfile} ${prog}
+	RETVAL=$?
+	echo
+        [ $RETVAL = 0 ] && rm -f ${lockfile} ${pidfile}
+}
+
+
+start() {
+	[ $LOAD_THRESH_1 -gt 0 ] && start_instance 1
+	RETVAL=$?
+	[ $LOAD_THRESH_2 -gt 0 ] && start_instance 2
+	RETVAL=$(( $? + RETVAL ))
+	[ $LOAD_THRESH_3 -gt 0 ] && start_instance 3
+	RETVAL=$(( $? + RETVAL ))
+	return $RETVAL
+}
+
+stop() {
+	[ -f ${base_pidfile}1 ] && stop_instance 1
+	RETVAL=$?
+	[ -f ${base_pidfile}2 ] && stop_instance 2
+	RETVAL=$(( $? + RETVAL ))
+	[ -f ${base_pidfile}3 ] && stop_instance 3
+	RETVAL=$(( $? + RETVAL ))
+	return $RETVAL
+}
+
+hangwatch_status() {
+	[ $LOAD_THRESH_1 -gt 0 ] && status ${base_prog}1 || (exit 0)
+	RETVAL=$?
+	[ $LOAD_THRESH_2 -gt 0 ] && status ${base_prog}2 || (exit 0)
+	RETVAL=$(( $? + RETVAL ))
+	[ $LOAD_THRESH_3 -gt 0 ] && status ${base_prog}3 || (exit 0)
+	RETVAL=$(( $? + RETVAL ))
+	return $RETVAL
+}
+
+case "$1" in
+	start)
+	    start
+	    ;;
+
+	stop)
+	    stop
+	    ;;
+
+	status)
+	    hangwatch_status
+	    ;;
+
+	restart)
+	    stop
+	    start
+	    ;;
+	*)
+	    echo $"Usage: $0 {start|stop|restart|status}"
+	    exit 1
+
+esac
+
+exit $RETVAL

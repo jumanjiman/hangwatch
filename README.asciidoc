@@ -1,0 +1,80 @@
+Hangwatch FAQ:
+
+Q0) Who are you?
+A0) My name is Chris Snook.  I work in Red Hat Support Engineering.  I originally wrote
+    hangwatch while working in Red Hat Production Support, in an effort to get some data
+    from a particularly frustrating hang.  It turned out to be very useful, so now I'm
+    working on developing it further.
+
+Q1) What does hangwatch do?
+A1) Hangwatch periodically polls /proc/loadavg, and echos a user-defined set of characters
+    into /proc/sysrq-trigger if a user-defined load threshold is exceeded.
+
+Q2) Why not just run a script from cron?
+A2) When the system is under heavy load, fork() calls may fail or hang indefinitely, making
+    cron jobs and shell scripts useless.
+
+Q3) Wouldn't "loadwatch" be a more accurate name?
+A3) Yes, it would.  Many hangs are actually the result of very rapid load spikes which never
+    show up in logs, because the applications that would be logging the load spike cannot run.
+    Calling it "hangwatch" convinces people to run it even if they haven't seen load spikes
+    with their hangs.
+
+Q4) Why not use NMI watchdog?
+A4) NMI watchdog and hangwatch complement each other.  NMI watchdog will fire when the system
+    is completely hung, but not when it is simply too bogged down to get any real work done.
+    Hangwatch will fire when the system is too bogged down to get work done, but probably
+    won't help for a hard lockup.  System hangs that do not trigger either NMI watchdog or
+    hangwatch are extremely rare in my experience.
+
+Q5) Do I have to compile it myself?
+A5) This RPM provides a compiled version of hangwatch and installs configuration files
+    for you. You can use the SRPM to compile hangwatch for other architectures if desired.
+
+Q6) How do I make hangwatch start at boot time?
+A6) The RPM installs a SysV-style init script. 
+    Run `chkconfig hangwatch on' to enable boot-time startup.
+    Run `service hangwatch start' to invoke it now.
+
+Q7) How do I make hangwatch run with higher priority?
+A7) Set the NICE variable in /etc/sysconfig/hangwatch. See "man nice" for details.
+
+Q8) How do I make hangwatch run with realtime priority?
+A8) Set the RTPRIO variable in /etc/sysconfig/hangwatch. See "man chrt" for details.
+
+Q9) How do I make hangwatch run on a particular processor?
+A9) Set the CPUS variable in /etc/sysconfig/hangwatch. See "man taskset" for details.  
+
+    This is particularly useful if you bind hangwatch to a certain processor and 
+    bind the troublesome application to the other processors.
+
+    The default /etc/sysconfig/hangwatch configures hangwatch to run on CPU0 only.
+    The simplest way to force troublesome applications to other processors is
+    to boot with the kernel parameter "isolcpus=0". This excludes CPU0 from the process
+    scheduler so that applications are scheduled on other CPUS only. This has effects
+    on latency and CPU service time, so consider the performance ramifications before
+    booting with the isolcpus parameter. Other ways to bind processes to particular
+    CPUS include taskset(1), numactl(8), and cpusets (see scheduler_domains.txt in the
+    kernel-doc).
+
+Q10) Where does the output of hangwatch go?
+A10) This depends on your syslog configuration, but generally it will at least go to the boot
+     console (serial terminals and netconsole help for recording this) and will also go to
+     /var/log/messages if the system is responsive enough to write to that file.
+
+Q11) How do I create different triggers for different load thresholds?
+A11) For now, the init script will invoke up to three instances of hangwatch
+     based on variables in /etc/sysconfig/hangwatch:
+     LOAD_THRESH_1, LOAD_THRESH_2, and LOAD_THRESH_3.
+     SYSRQ_1, SYSRQ_2, and SYSRQ_3.
+
+Q12) How can I collect a vmcore with hangwatch?
+A12) Put 'c' at the end of your string of sysrq characters.  The sysrq-c trigger causes a
+     controlled kernel panic, which should allow netdump, diskdump, kdump, etc. to work
+     properly.
+
+Q13) Will you please add feature X to hangwatch?
+A13) Maybe.  Because of the circumstances under which it operates, hangwatch must always be a
+     very lightweight program.  After startup, it can't do anything that might have problems
+     under heavy load.  That said, there are lots of other interesting pseudofiles it could
+     potentially work with.  Patches are welcome.
