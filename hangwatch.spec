@@ -65,7 +65,7 @@ mkdir -p %{buildroot}/var/run/hangwatch
 %doc README.asciidoc
 %doc src/LICENSE
 %doc src/README.first
-%doc src/FAQ.csnook
+%doc src/FAQ.orig
 %doc src/FAQ.astokes
 
 %preun
