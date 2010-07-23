@@ -10,14 +10,16 @@ RETVAL=0
 prog="hangwatch"
 HANGWATCH=/usr/sbin/hangwatch
 LOCK_FILE=/var/lock/subsys/hangwatch
+config=/etc/sysconfig/hangwatch
 
 # Source function library.
 . /etc/init.d/functions
 
 # sysconfig
-[ -f /etc/sysconfig/hangwatch ] && . /etc/sysconfig/hangwatch
-
-[ -f /etc/sysconfig/hangwatch ] || exit 6
+[ -r $config ] && . $config || {
+  echo "Error: unable to read $config"
+  exit 6
+  } >&2
 
 start() {
     echo -n "Starting $prog: "
