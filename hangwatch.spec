@@ -1,6 +1,6 @@
 Name: hangwatch
 Version: 0.3
-Release: 11%{?dist}
+Release: 12%{?dist}
 #Url: http://people.redhat.com/~csnook/hangwatch/
 #url: http://people.redhat.com/astokes/hangwatch/
 url: http://github.com/jumanjiman/hangwatch
@@ -75,6 +75,9 @@ if [ $1 -eq 0 ]; then
 fi
 
 %changelog
+* Fri Jul 23 2010 Paul Morgan <jumanjiman@gmail.com> 0.3-12
+- fixed files section of spec due to name change (jumanjiman@gmail.com)
+
 * Fri Jul 23 2010 Paul Morgan <jumanjiman@gmail.com> 0.3-11
 - fixed install section to account for tio src tree (jumanjiman@gmail.com)
 
