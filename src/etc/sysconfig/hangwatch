@@ -1,31 +1,10 @@
-# configure the startup of the hangwatch init-script
-
-# hangwatch checks the 1-minute system load avg every $INTERVAL minutes
-INTERVAL=1
-
-# Threshold above which some sysrq action is triggered.
-# Set to zero to disable a threshold.
-LOAD_THRESH_1=1000
-LOAD_THRESH_2=0
-LOAD_THRESH_3=0
-# which sysrq goes into /proc/sysrq-trigger?
-SYSRQ_1=""
-SYSRQ_2=""
-SYSRQ_3=""
-
-# the init-script will dynamically force kernel.sysrq=1
-# if this is set to "on".
-FORCE_KBD_SYSRQ=off
-
-# Force hangwatch to run on certain cpu's. 
-# See taskset(1) for valid cpu mask or list format
-# The default is to run only on CPU0. See the README for discussion.
-CPUS="0x00000001"
-
-# hangwatch can be made to run with a either a nice value or static priority
-# If both are specified, then the static priority is used (with SCHED_RR).
-# See sched_setscheduler(2) or chrt(1) for details.
-#NICE=10
-#RTPRIO=79
-
-
+# Set various options here
+# -s to set sysrq keys, default is:
+#	m - memory allocation
+#	t - dump thread state
+#	p - current cpu registers and flags
+# 	See http://kbase.redhat.com/faq/FAQ_80_5559.shtm for more options.
+#
+# -t to set threshold based on load average
+# -i sets your interval (in minutes).
+OPTIONS="-s mpt -t 5 -i 1"
