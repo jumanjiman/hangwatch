@@ -7,7 +7,7 @@ url: http://github.com/jumanjiman/hangwatch
 Summary: Triggers a system action if a user-defined loadavg is exceeded
 Group: Performance Tools
 License: GPL v2
-Source: hangwatch-%{version}-%{release}.tgz
+Source: hangwatch-%{version}-%{release}.tar.gz
 Packager: Paul Morgan <jumanjiman@gmail.com>
 BuildRoot: /tmp/%{name}-%{version}-%{release}
 BuildRequires: gcc
