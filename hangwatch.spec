@@ -68,10 +68,40 @@ mkdir -p %{buildroot}/var/run/hangwatch
 %doc src/FAQ.orig
 %doc src/FAQ.astokes
 
+
+# =====================================================
+# NOTE ON SCRIPTLETS (pre,post,preun,postun)
+# -----------------------------------------------------
+# RPM upgrade uses the following sequence.
+# The number in parentheses is the value of $1
+#   Run %pre of new package (2)
+#   Install new files
+#   Run %post of new package (2)
+#   Run %preun of old package (1)
+#   Delete any old files not overwritten by newer ones
+#   Run %postun of old package (1)
+# =====================================================
+
+
 %preun
 if [ $1 -eq 0 ]; then
-  /sbin/service hangwatch stop
-  /sbin/chkconfig --delete hangwatch
+  /sbin/service hangwatch stop || :
+  /sbin/chkconfig --delete hangwatch || :
+fi
+
+%post
+if [ $1 -gt 0 ]; then
+  /sbin/chkconfig hangwatch on
+  /bin/grep -q 'ks=' /proc/cmdline
+  if [ $? -ne 0 ]; then
+    # start if we're not kickstarting
+    /sbin/service hangwatch start
+  fi
+fi
+
+%postun
+if [ $1 -gt 0 ]; then
+  /sbin/service hangwatch condrestart || :
 fi
 
 %changelog
