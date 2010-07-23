@@ -75,6 +75,9 @@ if [ $1 -eq 0 ]; then
 fi
 
 %changelog
+* Fri Jul 23 2010 Paul Morgan <jumanjiman@gmail.com> 0.3-7
+- new package built with tito
+
 * Fri Jul 23 2010 Paul Morgan <pmorgan@redhat.com> 0.3-7
 - updated source from http://people.redhat.com/astokes/hangwatch/
   which daemonizes hangwatch
