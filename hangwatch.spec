@@ -1,6 +1,6 @@
 Name: hangwatch
 Version: 0.3
-Release: 13%{?dist}
+Release: 14%{?dist}
 #Url: http://people.redhat.com/~csnook/hangwatch/
 #url: http://people.redhat.com/astokes/hangwatch/
 url: http://github.com/jumanjiman/hangwatch
@@ -105,6 +105,9 @@ if [ $1 -gt 0 ]; then
 fi
 
 %changelog
+* Fri Jul 23 2010 Paul Morgan <jumanjiman@gmail.com> 0.3-14
+- hangwatch starts by default except during kickstart
+
 * Fri Jul 23 2010 Paul Morgan <jumanjiman@gmail.com> 0.3-13
 - hangwatch now lives in /usr/sbin/
 
