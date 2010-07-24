@@ -114,17 +114,11 @@ case "$1" in
     stop)    stop ;;
     status)  hangwatch_status ;;
     restart) stop; start ;;
-    reload)
-    	echo -n $"Reloading $prog: "
-    	killproc $HANGWATCH -HUP
-    	RETVAL=$?
-    	echo
-    ;;
     condrestart)
       [ -f $LOCK_FILE ] && restart || :
     ;;
     *)
-    echo $"Usage: $0 {start|stop|status|reload|restart|condrestart}"
+    echo $"Usage: $0 {start|stop|status|restart|condrestart}"
     RETVAL=3
 esac
 exit $RETVAL
