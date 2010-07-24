@@ -63,7 +63,7 @@ mkdir -p %{buildroot}/var/run/hangwatch
 /usr/sbin/hangwatch
 /var/run/hangwatch
 %config /etc/rc.d/init.d/hangwatch
-%config(noreplace) /etc/sysconfig/hangwatch
+%config /etc/sysconfig/hangwatch
 %doc README.asciidoc
 %doc src/LICENSE
 %doc src/README.first
