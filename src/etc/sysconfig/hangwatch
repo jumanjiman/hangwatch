@@ -7,4 +7,12 @@
 #
 # -t to set threshold based on load average
 # -i sets your interval (in minutes).
+
+# 1st instance
 OPTIONS="-s mpt -t 5 -i 1"
+
+# uncomment next line to start instance 2
+#OPTIONS_2="-s mpt -t 15 -i 1"
+
+# uncomment next line to start instance 3
+#OPTIONS_3="-s mpt -t 1000 -i 1"
