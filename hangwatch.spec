@@ -1,6 +1,6 @@
 Name: hangwatch
 Version: 0.3
-Release: 14%{?dist}
+Release: 15%{?dist}
 #Url: http://people.redhat.com/~csnook/hangwatch/
 #url: http://people.redhat.com/astokes/hangwatch/
 url: http://github.com/jumanjiman/hangwatch
@@ -107,6 +107,15 @@ if [ $1 -gt 0 ]; then
 fi
 
 %changelog
+* Fri Jul 23 2010 Paul Morgan <jumanjiman@gmail.com> 0.3-15
+- now supports up to 3 instances of hangwatch with different parameters
+- removed (noreplace) from /etc/sysconfig/hangwatch due to major change in
+  config file; look for .rpmsave after upgrade
+- preliminary support for cpu affinity and process priority
+- added taskset and chrt as dependencies; minor cleanup of spec file
+- removed reload from init script
+- helpful error is reported if /etc/sysconfig/hangwatch is unreadable
+
 * Fri Jul 23 2010 Paul Morgan <jumanjiman@gmail.com> 0.3-14
 - hangwatch starts by default except during kickstart
 
