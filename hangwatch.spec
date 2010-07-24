@@ -13,6 +13,8 @@ BuildRoot: /tmp/%{name}-%{version}-%{release}
 BuildRequires: gcc
 
 Requires: /usr/bin/logger
+Requires: /bin/taskset
+Requires: /usr/bin/chrt
 
 %description
 Hangwatch periodically polls /proc/loadavg, and echos a user-defined
@@ -110,24 +112,6 @@ fi
 
 * Fri Jul 23 2010 Paul Morgan <jumanjiman@gmail.com> 0.3-13
 - hangwatch now lives in /usr/sbin/
-
-* Fri Jul 23 2010 Paul Morgan <jumanjiman@gmail.com> 0.3-12
-- fixed files section of spec due to name change (jumanjiman@gmail.com)
-
-* Fri Jul 23 2010 Paul Morgan <jumanjiman@gmail.com> 0.3-11
-- fixed install section to account for tio src tree (jumanjiman@gmail.com)
-
-* Fri Jul 23 2010 Paul Morgan <jumanjiman@gmail.com> 0.3-10
-- adapted Makefile for tito src tree (jumanjiman@gmail.com)
-
-* Fri Jul 23 2010 Paul Morgan <jumanjiman@gmail.com> 0.3-9
-- really changed source spec for tito (jumanjiman@gmail.com)
-
-* Fri Jul 23 2010 Paul Morgan <jumanjiman@gmail.com> 0.3-8
-- changed source spec for tito (jumanjiman@gmail.com)
-
-* Fri Jul 23 2010 Paul Morgan <jumanjiman@gmail.com> 0.3-7
-- new package built with tito
 
 * Fri Jul 23 2010 Paul Morgan <pmorgan@redhat.com> 0.3-7
 - updated source from http://people.redhat.com/astokes/hangwatch/
