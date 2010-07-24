@@ -110,15 +110,13 @@ hangwatch_status() {
 }
 
 case "$1" in
-    start)   start ;;
-    stop)    stop ;;
-    status)  hangwatch_status ;;
-    restart) stop; start ;;
-    condrestart)
-      [ -f $LOCK_FILE ] && restart || :
-    ;;
+    start)       start ;;
+    stop)        stop ;;
+    status)      hangwatch_status ;;
+    restart)     stop; start ;;
+    condrestart) stop; start;;
     *)
-    echo $"Usage: $0 {start|stop|status|restart|condrestart}"
-    RETVAL=3
+    	echo $"Usage: $0 {start|stop|status|restart|condrestart}"
+    	RETVAL=3
 esac
 exit $RETVAL
