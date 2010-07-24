@@ -1,6 +1,6 @@
 Name: hangwatch
 Version: 0.3
-Release: 15%{?dist}
+Release: 16%{?dist}
 #Url: http://people.redhat.com/~csnook/hangwatch/
 #url: http://people.redhat.com/astokes/hangwatch/
 url: http://github.com/jumanjiman/hangwatch
@@ -107,6 +107,9 @@ if [ $1 -gt 0 ]; then
 fi
 
 %changelog
+* Sat Jul 24 2010 Paul Morgan <jumanjiman@gmail.com> 0.3-16
+- expanded and cleaned up README.asciidoc
+
 * Fri Jul 23 2010 Paul Morgan <jumanjiman@gmail.com> 0.3-15
 - now supports up to 3 instances of hangwatch with different parameters
 - removed (noreplace) from /etc/sysconfig/hangwatch due to major change in
