@@ -16,3 +16,14 @@ OPTIONS="-s mpt -t 5 -i 1"
 
 # uncomment next line to start instance 3
 #OPTIONS_3="-s mpt -t 1000 -i 1"
+
+# Force hangwatch to run on certain cpu's. 
+# See taskset(1) for valid cpu mask or list format
+# The default is to run only on CPU0. See the README for discussion.
+CPUS="0x00000001"
+
+# hangwatch can be made to run with a either a nice value or static priority
+# If both are specified, then the static priority is used (with SCHED_RR).
+# See sched_setscheduler(2) or chrt(1) for details.
+#NICELEVEL="-10"
+#RTPRIO=79
