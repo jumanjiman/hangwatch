@@ -26,23 +26,38 @@ Why not use NMI watchdog?::
     trigger either NMI watchdog or hangwatch are extremely rare in
     my experience.
 
-Do I have to compile it myself?::
-    This RPM provides a compiled version of hangwatch and installs
-    configuration files for you. You can use the SRPM to compile
-    hangwatch for other architectures if desired.
-
 How do I make hangwatch start at boot time?::
-    The RPM installs a SysV-style init script. 
-    Run `chkconfig hangwatch on` to enable boot-time startup.
-    Run `service hangwatch start` to invoke it now.
+The RPM installs a SysV-style init script and enables
+boot-time startup. The RPM also starts hangwatch immediately
+unless the machine is kickstarting.
++
+To disable boot-time startup:
++
+----
+chkconfig hangwatch off
+----
++
+To stop the service:
++
+----
+service hangwatch stop
+----
+
+What is an appropriate threshold for `loadavg`?::
+In general, the threshold should be at least 5X
+the number of CPU cores shown in `/proc/cpuinfo`.
+Practically, the threshold should be high enough
+that hangwatch does not trigger unless the system
+is unresponsive or almost unresponsive due to high load.
 
 How do I make hangwatch run with higher priority?::
-    Set the NICE variable in `/etc/sysconfig/hangwatch`. 
+    Set the `NICELEVEL` variable in `/etc/sysconfig/hangwatch`. 
 	See `man nice` for details.
 
 How do I make hangwatch run with realtime priority?::
-    Set the RTPRIO variable in `/etc/sysconfig/hangwatch`. 
-    See `man chrt` for details.
+    Set the `RTPRIO` variable in `/etc/sysconfig/hangwatch`. 
+    See `man chrt` for details. This variable overrides
+	the nice level.
 
 How do I make hangwatch run on a particular processor?::
 Set the CPUS variable in `/etc/sysconfig/hangwatch`. 
@@ -70,15 +85,51 @@ Where does the output of hangwatch go?::
     that file.
 
 How do I create different triggers for different load thresholds?::
-    For now, the init script will invoke up to three instances
-    of hangwatch based on variables in `/etc/sysconfig/hangwatch`:
-    LOAD_THRESH_1, LOAD_THRESH_2, and LOAD_THRESH_3.
-    SYSRQ_1, SYSRQ_2, and SYSRQ_3.
+The default configuration shipped with the package activates
+a single instance of hangwatch:
++
+----
+OPTIONS="-s mpt -t 5 -i 1"
+#OPTIONS_2="-s mpt -t 15 -i 1"
+#OPTIONS_3="-s mpt -t 1000 -i 1"
+----
++
+If you uncomment the second and third options, then restart
+hangwatch, you can check status such as:
++
+----
+# service hangwatch status
+hangwatch1 (pid 20862) is running...
+hangwatch2 (pid 20873) is running...
+hangwatch3 (pid 20884) is running...
+----
 
 How can I collect a vmcore with hangwatch?::
     Put `c` at the end of your string of sysrq characters.
     The sysrq-c trigger causes a controlled kernel panic, which should
     allow netdump, diskdump, kdump, etc. to work properly.
+
+Where can I get the source for hangwatch?::
+You can use `git` to clone the hangwatch repo on github:
++
+----
+git clone git@github.com:jumanjiman/hangwatch.git
+----
++
+You can also download one version of the source from 
+http://people.redhat.com/astokes/hangwatch/
+
+Do I have to compile it myself?::
+An RPM provides a compiled version of hangwatch and installs
+configuration files for you. You can use the SRPM to compile
+hangwatch for other architectures if desired.
+One version of the RPM can be downloaded from 
+http://people.redhat.com/astokes/hangwatch/.
++
+The source in the git repo listed above provides additional features
+but must be built. A good tool for building the package is
+`tito`, which is in Fedora. The latest version of tito is at
+http://github.com/dgoodwin/tito
 
 Will you please add feature X to hangwatch?::
     Maybe.  Because of the circumstances under which it
