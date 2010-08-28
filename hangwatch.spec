@@ -1,20 +1,25 @@
 Name: hangwatch
+Summary: Triggers a system action if a user-defined loadavg is exceeded
+Group: Applications/System
+License: GPLv2
+
 Version: 0.3
 Release: 16%{?dist}
+
 #Url: http://people.redhat.com/~csnook/hangwatch/
 #url: http://people.redhat.com/astokes/hangwatch/
 url: http://github.com/jumanjiman/hangwatch
-Summary: Triggers a system action if a user-defined loadavg is exceeded
-Group: Performance Tools
-License: GPL v2
+
 Source: %{name}-%{version}.tar.gz
-Packager: Paul Morgan <jumanjiman@gmail.com>
-BuildRoot: /tmp/%{name}-%{version}-%{release}
+BuildRoot:  %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildRequires: gcc
 
 Requires: /usr/bin/logger
 Requires: /bin/taskset
 Requires: /usr/bin/chrt
+Requires: grep
+Requires: chkconfig
+Requires: initscripts
 
 %description
 Hangwatch periodically polls /proc/loadavg, and echos a user-defined
@@ -32,38 +37,39 @@ with their hangs.
 Thanks to Chris Snook for making this tool available.
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-General Public License for more details.
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+See the GNU General Public License for more details.
 
 %prep
 %setup -q
 
 %clean
-[ "%{buildroot}" = "/" ] && exit 1
-rm -fr %{buildroot}
-make -C src/ clean
+%{__rm} -fr %{buildroot}
+make %{?_smp_mflags} -C src/ clean
 
 %build
-[ "%{buildroot}" = "/" ] && exit 1
-rm -fr %{buildroot}
-make -C src/ all
+make %{?_smp_mflags} -C src/ all
 
 
 %install
-mkdir -p %{buildroot}/usr/sbin
-mkdir -p %{buildroot}/etc/sysconfig
-mkdir -p %{buildroot}/etc/rc.d/init.d
-install -m755 src/hangwatch %{buildroot}/usr/sbin
-install -m755 src/etc/rc.d/init.d/hangwatch %{buildroot}/etc/rc.d/init.d
-install -m644 src/etc/sysconfig/hangwatch %{buildroot}/etc/sysconfig
-mkdir -p %{buildroot}/var/run/hangwatch
+%{__rm} -fr %{buildroot}
+%{__mkdir_p} %{buildroot}/%{_sbindir}
+%{__mkdir_p} %{buildroot}/%{_sysconfdir}/sysconfig
+%{__mkdir_p} %{buildroot}/%{_sysconfdir}/rc.d/init.d
+%{__mkdir_p} %{buildroot}/%{_var}/run/hangwatch
+%{__install} -p -m755 src/hangwatch %{buildroot}/usr/sbin
+%{__install} -p -m755 src/etc/rc.d/init.d/hangwatch %{buildroot}/%{_sysconfdir}/rc.d/init.d
+%{__install} -p -m644 src/etc/sysconfig/hangwatch %{buildroot}/%{_sysconfdir}/sysconfig
 
 %files
 %defattr(-,root,root,-)
-/usr/sbin/hangwatch
-/var/run/hangwatch
-%config /etc/rc.d/init.d/hangwatch
-%config /etc/sysconfig/hangwatch
+
+%{_sbindir}/hangwatch
+%dir %{_var}/run/hangwatch
+
+%config %{_sysconfdir}/rc.d/init.d/hangwatch
+%config %{_sysconfdir}/sysconfig/hangwatch
+
 %doc README.asciidoc
 %doc src/LICENSE
 %doc src/README.first
