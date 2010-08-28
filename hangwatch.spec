@@ -4,7 +4,7 @@ Group: Applications/System
 License: GPLv2
 
 Version: 0.3
-Release: 16%{?dist}
+Release: 17%{?dist}
 
 #Url: http://people.redhat.com/~csnook/hangwatch/
 #url: http://people.redhat.com/astokes/hangwatch/
@@ -113,6 +113,9 @@ if [ $1 -gt 0 ]; then
 fi
 
 %changelog
+* Sat Aug 28 2010 Paul Morgan <jumanjiman@gmail.com> 0.3-17
+- cleaned up spec file (jumanjiman@gmail.com)
+
 * Sat Jul 24 2010 Paul Morgan <jumanjiman@gmail.com> 0.3-16
 - expanded and cleaned up README.asciidoc
 
