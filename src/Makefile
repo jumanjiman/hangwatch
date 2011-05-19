@@ -1,7 +1,7 @@
 all: hangwatch 
 
 hangwatch: hangwatch.c
-	$(CC) -o $@ hangwatch.c
+	$(CC) -Os -o $@ hangwatch.c
 
 clean:
 	/bin/rm -f hangwatch
