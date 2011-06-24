@@ -111,7 +111,7 @@ if [ $1 -gt 0 ]; then
   /bin/grep -q 'ks=' /proc/cmdline
   if [ $? -ne 0 ]; then
     # start if we're not kickstarting
-    /sbin/service hangwatch start
+    /sbin/service hangwatch restart || :
   else
     :
   fi
