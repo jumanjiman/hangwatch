@@ -112,6 +112,8 @@ if [ $1 -gt 0 ]; then
   if [ $? -ne 0 ]; then
     # start if we're not kickstarting
     /sbin/service hangwatch start
+  else
+    :
   fi
 fi
 
