@@ -42,7 +42,7 @@ start_instance() {
 	esac
     cmd="$prog $opts &> /dev/null &"
     echo -n $"Starting $prog: "
-    daemon --pidfile=${pidfile} $cmd
+    daemon --pidfile ${pidfile} $cmd
     pidof $prog > ${pidfile}
     RETVAL=$?
     if [ -f ${pidfile} ]; then
