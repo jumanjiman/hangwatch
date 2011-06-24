@@ -123,6 +123,9 @@ if [ $1 -gt 0 ]; then
 fi
 
 %changelog
+* Fri Jun 24 2011 Paul Morgan <jumanjiman@gmail.com> 0.4-2
+- do not clobber config on upgrade (jumanjiman@gmail.com)
+
 * Fri Jun 24 2011 Paul Morgan <jumanjiman@gmail.com> 0.4-1
 - fix issues with init script (jumanjiman@gmail.com)
 - install symlinks to have up to 3 instances of hangwatch
