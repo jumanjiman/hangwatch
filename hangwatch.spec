@@ -76,7 +76,7 @@ popd
 %dir %{_var}/run/hangwatch
 
 %config %{_sysconfdir}/rc.d/init.d/hangwatch
-%config %{_sysconfdir}/sysconfig/hangwatch
+%config(noreplace) %{_sysconfdir}/sysconfig/hangwatch
 
 %doc README.asciidoc
 %doc src/LICENSE
