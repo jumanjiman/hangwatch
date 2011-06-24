@@ -4,7 +4,7 @@ Group: Applications/System
 License: GPLv2
 
 Version: 0.4
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 #Url: http://people.redhat.com/~csnook/hangwatch/
 #url: http://people.redhat.com/astokes/hangwatch/
