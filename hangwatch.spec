@@ -102,7 +102,7 @@ popd
 %preun
 if [ $1 -eq 0 ]; then
   /sbin/service hangwatch stop || :
-  /sbin/chkconfig --delete hangwatch || :
+  /sbin/chkconfig --del hangwatch || :
 fi
 
 %post
