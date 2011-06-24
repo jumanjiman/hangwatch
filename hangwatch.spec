@@ -3,8 +3,8 @@ Summary: Triggers a system action if a user-defined loadavg is exceeded
 Group: Applications/System
 License: GPLv2
 
-Version: 0.3
-Release: 17%{?dist}
+Version: 0.4
+Release: 1%{?dist}
 
 #Url: http://people.redhat.com/~csnook/hangwatch/
 #url: http://people.redhat.com/astokes/hangwatch/
@@ -123,6 +123,13 @@ if [ $1 -gt 0 ]; then
 fi
 
 %changelog
+* Fri Jun 24 2011 Paul Morgan <jumanjiman@gmail.com> 0.4-1
+- fix issues with init script (jumanjiman@gmail.com)
+- install symlinks to have up to 3 instances of hangwatch
+- fix issues with upgrade and final uninstall (jumanjiman@gmail.com)
+- Added size-optimization flag to squeeze binary under 3 pages on x86_64.
+  (chris.snook@gmail.com)
+
 * Sat Aug 28 2010 Paul Morgan <jumanjiman@gmail.com> 0.3-17
 - cleaned up spec file (jumanjiman@gmail.com)
 
