@@ -58,6 +58,11 @@ make %{?_smp_mflags} -C src/ all
 %{__mkdir_p} %{buildroot}/%{_sysconfdir}/rc.d/init.d
 %{__mkdir_p} %{buildroot}/%{_var}/run/hangwatch
 %{__install} -p -m755 src/hangwatch %{buildroot}/usr/sbin
+pushd %{buildroot}/usr/sbin
+%{__ln_s} hangwatch hangwatch1
+%{__ln_s} hangwatch hangwatch2
+%{__ln_s} hangwatch hangwatch3
+popd
 %{__install} -p -m755 src/etc/rc.d/init.d/hangwatch %{buildroot}/%{_sysconfdir}/rc.d/init.d
 %{__install} -p -m644 src/etc/sysconfig/hangwatch %{buildroot}/%{_sysconfdir}/sysconfig
 
@@ -65,6 +70,9 @@ make %{?_smp_mflags} -C src/ all
 %defattr(-,root,root,-)
 
 %{_sbindir}/hangwatch
+%{_sbindir}/hangwatch1
+%{_sbindir}/hangwatch2
+%{_sbindir}/hangwatch3
 %dir %{_var}/run/hangwatch
 
 %config %{_sysconfdir}/rc.d/init.d/hangwatch
