@@ -45,7 +45,7 @@ start_instance() {
     daemon --pidfile ${pidfile} $cmd
     pidof $prog > ${pidfile}
     RETVAL=$?
-    if [ -f ${pidfile} ]; then
+    if [ $RETVAL -eq 0 ]; then
         if [ "x$CPUS" != "x" ]; then
             affinity="$(/bin/taskset -p $CPUS $(cat ${pidfile}))"
             /usr/bin/logger -t ${prog} $affinity
